@@ -39,4 +39,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: python-executable
-          path: dist/main # Replace with the correct path to the built executable
+          path: dist
