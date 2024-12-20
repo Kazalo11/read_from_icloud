@@ -58,8 +58,8 @@ for video in api.photos.albums[album_name]:
     if os.path.exists(destination_file):
         print(f"File {video.filename} already exists, skipping download...")
     else:
-        download = video.download()
         print(f"Downloading {video.filename}...")
+        download = video.download()
         with open(destination_file, 'wb') as file:
             shutil.copyfileobj(download.raw, file)
 
