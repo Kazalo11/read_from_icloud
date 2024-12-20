@@ -51,11 +51,15 @@ elif api.requires_2sa:
     if not api.validate_verification_code(device, code):
         print("Failed to verify verification code")
         sys.exit(1)
+
+all_files = set()
+for root, dirs, files in os.walk(SAVE_DIR):
+    for file in files:
+        all_files.add(file)
         
 for video in api.photos.albums[album_name]:
     destination_file = os.path.join(SAVE_DIR, video.filename)
-    
-    if os.path.exists(destination_file):
+    if video.filename in all_files:
         print(f"File {video.filename} already exists, skipping download...")
     else:
         print(f"Downloading {video.filename}...")
