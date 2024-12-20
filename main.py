@@ -6,10 +6,11 @@ from pyicloud import PyiCloudService
 
 username = input("Enter your username: ")
 password = input("Enter your password: ")
+album_name = input("Enter the album name")
 
 api = PyiCloudService(username, password)
 
-SAVE_DIR = 'Volumes/CRUMBS_32'
+SAVE_DIR = '/Volumes/CRUMBS_32'
 os.makedirs(SAVE_DIR, exist_ok=True)
 
 if api.requires_2fa:
@@ -51,10 +52,14 @@ elif api.requires_2sa:
         print("Failed to verify verification code")
         sys.exit(1)
         
-for video in api.photos.albums['milk and cookies cake']:
+for video in api.photos.albums[album_name]:
     destination_file = os.path.join(SAVE_DIR, video.filename)
-    download = video.download()
-    print(f"Downloading {video.filename}...")
-    with open(destination_file, 'wb') as file:
-        shutil.copyfileobj(download.raw, file)
+    
+    if os.path.exists(destination_file):
+        print(f"File {video.filename} already exists, skipping download...")
+    else:
+        download = video.download()
+        print(f"Downloading {video.filename}...")
+        with open(destination_file, 'wb') as file:
+            shutil.copyfileobj(download.raw, file)
 
